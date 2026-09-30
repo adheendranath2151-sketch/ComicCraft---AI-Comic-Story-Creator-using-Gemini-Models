@@ -1,1 +1,637 @@
 6-Project-Testing
+ComicCraft – AI Comic Story Creator Using Gemini Models
+Project Testing
+1. Testing Overview
+Testing is an important phase of the ComicCraft project to ensure that the application works correctly, generates usable AI content, protects user data, and provides a smooth comic-creation experience.
+The testing process covers:
+•	User interface
+•	Authentication
+•	Database
+•	Backend APIs
+•	Gemini AI integration
+•	Comic generation
+•	Comic editor
+•	Image handling
+•	Preview
+•	Export
+•	Security
+•	Performance
+•	End-to-end workflow
+The overall testing process is:
+Test Planning
+     ↓
+Unit Testing
+     ↓
+Integration Testing
+     ↓
+AI Testing
+     ↓
+System Testing
+     ↓
+Security Testing
+     ↓
+Performance Testing
+     ↓
+User Acceptance Testing
+     ↓
+Bug Fixing
+     ↓
+Final Validation
+________________________________________
+2. Testing Objectives
+The main objectives are to:
+1.	Verify that all functional requirements are implemented.
+2.	Ensure users can create and manage comic projects.
+3.	Verify Gemini generates valid and relevant comic content.
+4.	Ensure AI-generated data is correctly stored.
+5.	Verify users can edit generated comics.
+6.	Ensure PDF/image exports are generated correctly.
+7.	Identify and fix application errors.
+8.	Verify unauthorized users cannot access other users' projects.
+9.	Check application performance and reliability.
+10.	Ensure the final system is suitable for real-world use.
+________________________________________
+3. Testing Strategy
+ComicCraft uses several levels of testing.
+Testing Type	Purpose
+Unit Testing	Test individual functions/components
+Integration Testing	Test interaction between modules
+AI Testing	Test Gemini-generated content
+System Testing	Test the complete application
+Security Testing	Identify security vulnerabilities
+Performance Testing	Check response time and stability
+Usability Testing	Evaluate ease of use
+User Acceptance Testing	Verify the system meets user requirements
+________________________________________
+4. Unit Testing
+Unit testing checks individual components independently.
+Frontend components
+Test:
+•	Login form
+•	Registration form
+•	Comic creation form
+•	Character form
+•	Panel editor
+•	Dialogue editor
+•	Preview component
+•	Export button
+Backend components
+Test:
+•	Authentication functions
+•	Project CRUD operations
+•	Character CRUD operations
+•	Panel operations
+•	Prompt builder
+•	Gemini response parser
+•	Export service
+Example
+Function: createProject()
+
+Input:
+Valid project information
+
+Expected:
+Project created successfully
+Another example:
+Function: validatePanel()
+
+Input:
+Panel with missing scene description
+
+Expected:
+Validation error
+________________________________________
+5. Authentication Testing
+Authentication must be tested carefully because it protects user projects.
+Test cases
+Test Case	Input	Expected Result
+Valid registration	Valid name/email/password	Account created
+Invalid email	Incorrect email format	Validation error
+Empty password	Empty password	Error displayed
+Valid login	Correct credentials	Dashboard opened
+Invalid login	Wrong password	Login rejected
+Logout	Logged-in user	Session terminated
+Unauthorized page	No valid session	Redirect to login
+________________________________________
+6. Project Management Testing
+Users should be able to manage their own comics.
+Test cases
+Test	Expected Result
+Create project	Project created
+View project	Correct project displayed
+Edit project	Changes saved
+Delete project	Project removed
+Rename project	New title stored
+Open another user's project	Access denied
+Empty project title	Validation error
+________________________________________
+7. Gemini AI Testing
+AI testing is particularly important because Gemini responses are not completely deterministic.
+The testing should verify both content quality and technical validity.
+Test criteria
+•	Response is returned successfully.
+•	Required fields are present.
+•	Structured output is valid.
+•	Number of panels matches the requested range.
+•	Characters referenced in dialogue exist.
+•	Dialogue belongs to the correct characters.
+•	Generated content is relevant to the user's prompt.
+•	Generated content does not contain unexpected system instructions or application data.
+•	Invalid AI responses are handled gracefully.
+________________________________________
+8. Story Generation Testing
+Example test:
+Input:
+
+Genre: Science Fiction
+Idea: A robot discovers an abandoned city.
+Pages: 5
+Expected result
+The system should return:
+•	Story title
+•	Story summary
+•	Characters
+•	Scenes
+•	Panels
+•	Dialogue/narration
+•	Visual prompts
+The system should reject or retry responses that cannot be parsed into the expected structure.
+________________________________________
+9. Character Generation Testing
+Test cases
+Test	Expected Result
+Generate characters	Characters created
+Specify 2 characters	Appropriate character list returned
+Edit character	Changes saved
+Delete character	Character removed
+Generate without story	Validation/error message
+Duplicate character	Duplicate handled appropriately
+________________________________________
+10. Panel Generation Testing
+Panel generation should be checked for consistency.
+Test cases
+Story
+ ↓
+Generate Panels
+ ↓
+Check Panel Count
+ ↓
+Check Panel Numbering
+ ↓
+Check Characters
+ ↓
+Check Dialogue
+ ↓
+Check Visual Prompt
+Expected:
+•	Panels are numbered sequentially.
+•	Each panel has valid content.
+•	Characters belong to the project.
+•	Dialogue references valid characters.
+•	Panel order is preserved.
+________________________________________
+11. Dialogue Testing
+The dialogue module should verify:
+•	Correct speaker names
+•	Appropriate dialogue placement
+•	Dialogue is linked to the correct panel
+•	Empty dialogue is handled
+•	Long dialogue does not break the layout
+•	Users can edit generated dialogue
+Example:
+Panel 2
+
+Character:
+Maya
+
+Dialogue:
+"We need to leave before sunset."
+
+Expected:
+Dialogue stored under Panel 2
+and associated with Maya.
+________________________________________
+12. Comic Editor Testing
+The editor should be tested for all editing operations.
+Test cases
+Operation	Expected Result
+Add panel	New panel appears
+Delete panel	Panel removed
+Duplicate panel	Copy created
+Move panel	Correct order maintained
+Edit narration	Changes saved
+Edit dialogue	Changes saved
+Replace image	New image displayed
+Save comic	Changes persisted
+Undo/redo, if implemented	Correct state restored
+________________________________________
+13. Image Testing
+Image functionality should be tested for:
+•	Uploading valid images
+•	Rejecting unsupported file types
+•	File-size limits
+•	Image replacement
+•	Image deletion
+•	Image preview
+•	Broken image URLs
+•	Missing images during export
+Example:
+Upload Image
+     ↓
+Validate Type
+     ↓
+Validate Size
+     ↓
+Store Image
+     ↓
+Save Image Reference
+     ↓
+Display in Panel
+________________________________________
+14. Preview Testing
+The preview should accurately represent the final comic.
+Test:
+•	Page order
+•	Panel order
+•	Images
+•	Dialogue
+•	Narration
+•	Fonts
+•	Panel boundaries
+•	Page breaks
+•	Long text
+•	Missing images
+The preview should not display content from another project.
+________________________________________
+15. Export Testing
+The export module should be tested for:
+PDF
+•	PDF is generated successfully.
+•	Correct number of pages.
+•	Correct panel order.
+•	Images appear correctly.
+•	Dialogue and narration are readable.
+•	Page layout is not broken.
+Image Export
+•	Correct image dimensions.
+•	Correct page order.
+•	Images contain all required comic elements.
+Example:
+Comic Project
+     ↓
+Export PDF
+     ↓
+Generate Pages
+     ↓
+Render Panels
+     ↓
+Add Text + Images
+     ↓
+Create PDF
+     ↓
+Download
+________________________________________
+16. API Testing
+API endpoints should be tested independently using a tool such as Postman.
+Example API tests
+POST /api/auth/login
+POST /api/projects
+GET  /api/projects
+GET  /api/projects/:id
+PUT  /api/projects/:id
+DELETE /api/projects/:id
+
+POST /api/ai/story
+POST /api/ai/characters
+POST /api/ai/panels
+
+PUT /api/panels/:id
+
+POST /api/export/pdf
+Each API should be tested with:
+•	Valid input
+•	Missing input
+•	Invalid input
+•	Unauthorized requests
+•	Malformed requests
+•	Server/API failures
+________________________________________
+17. Integration Testing
+Integration testing verifies communication between modules.
+Example 1 – AI + Database
+User
+ ↓
+Generate Story
+ ↓
+Backend
+ ↓
+Gemini
+ ↓
+Response
+ ↓
+Validation
+ ↓
+Database
+ ↓
+Project Updated
+Example 2 – Editor + Database
+Edit Panel
+ ↓
+Save
+ ↓
+API
+ ↓
+Database
+ ↓
+Updated Panel
+ ↓
+Editor
+Example 3 – Project + Export
+Project
+ ↓
+Pages
+ ↓
+Panels
+ ↓
+Images
+ ↓
+Export Service
+ ↓
+PDF
+________________________________________
+18. System Testing
+System testing validates the complete application as one system.
+Complete test scenario
+Register
+   ↓
+Login
+   ↓
+Create New Comic
+   ↓
+Enter Story Idea
+   ↓
+Generate Story
+   ↓
+Generate Characters
+   ↓
+Generate Panels
+   ↓
+Generate Dialogue
+   ↓
+Edit Comic
+   ↓
+Save
+   ↓
+Preview
+   ↓
+Export PDF
+Expected Result
+The user should be able to complete the entire workflow without encountering an unhandled error.
+________________________________________
+19. Security Testing
+Security testing should cover:
+Authentication
+•	Invalid login attempts
+•	Session expiration
+•	Unauthorized API access
+Authorization
+Verify that:
+User A
+  ↓
+Can access User A projects
+
+User B
+  ↓
+Cannot access User A projects
+API Security
+Test:
+•	Invalid authentication tokens
+•	Missing authentication
+•	Invalid project IDs
+•	Malformed requests
+•	Excessive requests
+Secret Protection
+Verify that:
+•	Gemini credentials are not included in frontend code.
+•	Secrets are stored in environment/configuration management.
+•	Secrets are not written to logs.
+________________________________________
+20. Input Validation Testing
+The application should validate user input before processing.
+Test invalid inputs
+•	Empty story idea
+•	Extremely long story idea
+•	Invalid page count
+•	Negative panel count
+•	Unsupported language
+•	Invalid file type
+•	Oversized image
+•	Empty project title
+Example:
+Pages = -5
+       ↓
+Invalid
+       ↓
+Show validation message
+       ↓
+Do not submit
+________________________________________
+21. Performance Testing
+Performance testing determines whether ComicCraft remains responsive under expected usage.
+Areas to test
+•	Dashboard loading
+•	Project loading
+•	Database queries
+•	AI generation requests
+•	Image uploads
+•	Comic preview
+•	PDF generation
+AI generation naturally depends on external service response time, so the interface should provide a loading/progress state rather than appearing frozen.
+Example:
+Generating your comic...
+[████████░░] Processing
+________________________________________
+22. Usability Testing
+A small group of representative users can be asked to perform common tasks.
+Tasks
+1.	Register.
+2.	Create a comic.
+3.	Enter a story idea.
+4.	Generate a story.
+5.	Edit a character.
+6.	Modify a panel.
+7.	Preview the comic.
+8.	Export the comic.
+Observe
+•	Can users understand the interface?
+•	Are buttons clearly labeled?
+•	Can users understand AI-generation status?
+•	Can users recover from errors?
+•	Is the editor easy to use?
+•	Can users find saved projects?
+________________________________________
+23. User Acceptance Testing
+User Acceptance Testing (UAT) verifies that ComicCraft meets its original requirements.
+Acceptance criteria
+Requirement	Acceptance Condition
+User registration	User can create an account
+Comic creation	User can create a project
+AI story	Gemini generates structured story content
+Characters	Characters are generated and editable
+Panels	Story can be divided into panels
+Dialogue	Dialogue can be generated and edited
+Editor	User can modify comic content
+Preview	Complete comic can be previewed
+Export	Comic can be exported
+Security	Users cannot access unauthorized projects
+________________________________________
+24. Sample Test Cases
+ID	Test Case	Input	Expected Result
+TC01	User registration	Valid user details	Account created
+TC02	User login	Valid credentials	Dashboard displayed
+TC03	Invalid login	Wrong password	Error displayed
+TC04	Create comic	Valid project details	Project created
+TC05	Empty story	Blank prompt	Validation error
+TC06	Generate story	Valid story prompt	AI story generated
+TC07	Generate characters	Valid project	Characters generated
+TC08	Generate panels	Existing story	Panels generated
+TC09	Edit dialogue	Modified text	Changes saved
+TC10	Delete panel	Existing panel	Panel deleted
+TC11	Upload image	Valid image	Image uploaded
+TC12	Invalid image	Unsupported file	Upload rejected
+TC13	Preview	Completed project	Comic displayed
+TC14	Export PDF	Completed comic	PDF generated
+TC15	Unauthorized project	Other user's ID	Access denied
+TC16	AI failure	Simulated API failure	Error/retry message
+TC17	Database failure	Database unavailable	Graceful error
+TC18	Logout	Logged-in user	Session terminated
+________________________________________
+25. AI Quality Evaluation
+Because ComicCraft relies heavily on AI, normal software testing alone is insufficient.
+Generated content can be evaluated using criteria such as:
+Relevance
+Does the generated story follow the user's idea?
+Coherence
+Does the story maintain a logical sequence?
+Character consistency
+Are characters described consistently between scenes?
+Dialogue quality
+Is dialogue appropriate for the characters and scene?
+Structural validity
+Does the response follow the expected schema?
+User control
+Can the user modify or regenerate unsatisfactory content?
+A simple internal evaluation format can be:
+AI Output
+   │
+   ├── Schema Valid?
+   ├── Required Fields Present?
+   ├── Character References Valid?
+   ├── Panel Count Valid?
+   └── Content Relevant?
+          │
+          ▼
+       Accept
+      or Retry/Edit
+________________________________________
+26. Bug Tracking
+Detected problems should be recorded and categorized.
+Priority	Description
+Critical	Application unusable/security-critical issue
+High	Major feature does not work
+Medium	Feature works incorrectly in some cases
+Low	Minor UI or cosmetic issue
+Example:
+Bug ID: BUG-004
+
+Module: Comic Editor
+
+Problem:
+Panel order changes unexpectedly after saving.
+
+Priority:
+High
+
+Status:
+Open → Fixed → Retested
+________________________________________
+27. Regression Testing
+After fixing a bug or adding a feature, previously working functionality should be tested again.
+Example:
+Fix Panel Editor
+      ↓
+Test Panel Editor
+      ↓
+Test Story Generation
+      ↓
+Test Database Saving
+      ↓
+Test Preview
+      ↓
+Test Export
+This ensures that changes to one component do not break other parts of ComicCraft.
+________________________________________
+28. Final Testing Checklist
+Authentication
+•	Registration works
+•	Login works
+•	Logout works
+•	Unauthorized access blocked
+AI
+•	Story generation works
+•	Character generation works
+•	Scene generation works
+•	Panel generation works
+•	Dialogue generation works
+•	Invalid AI responses handled
+Comic Editor
+•	Add panel
+•	Delete panel
+•	Edit panel
+•	Reorder panel
+•	Edit dialogue
+•	Replace image
+•	Save changes
+Export
+•	Preview works
+•	PDF export works
+•	Image export works
+•	Page order correct
+•	Text readable
+•	Images correctly positioned
+Security
+•	Authentication protected
+•	Authorization verified
+•	API credentials protected
+•	File uploads validated
+•	User data isolated
+________________________________________
+29. Final Testing Outcome
+After successful testing, ComicCraft should satisfy the following complete workflow:
+User
+ ↓
+Login
+ ↓
+Create Comic
+ ↓
+Enter Idea
+ ↓
+Gemini AI
+ ↓
+Story
+ ↓
+Characters
+ ↓
+Scenes
+ ↓
+Panels
+ ↓
+Dialogue
+ ↓
+Comic Editor
+ ↓
+Preview
+ ↓
+PDF/Image Export
+The final testing phase confirms that ComicCraft is functionally correct, secure, reliable, usable, and capable of transforming a user's idea into an editable AI-assisted comic.
+
