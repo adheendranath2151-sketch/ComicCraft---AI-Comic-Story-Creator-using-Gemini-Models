@@ -1,1 +1,655 @@
 3-Project-Design
+ComicCraft – AI Comic Story Creator Using Gemini Models
+Project Design
+1. System Design Overview
+ComicCraft is designed as a web-based AI application that converts a user's story idea into a structured comic. The system uses Gemini models to generate story content, characters, scenes, dialogue, narration, and visual prompts.
+The overall design follows a modular architecture:
+                    ┌──────────────────────┐
+                    │        USER          │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │   ComicCraft UI      │
+                    │  Web / Mobile UI     │
+                    └──────────┬───────────┘
+                               │
+                               ▼
+                    ┌──────────────────────┐
+                    │    Backend API       │
+                    └──────────┬───────────┘
+                               │
+             ┌─────────────────┼─────────────────┐
+             │                 │                 │
+             ▼                 ▼                 ▼
+     ┌──────────────┐  ┌──────────────┐  ┌──────────────┐
+     │ Gemini AI    │  │   Database   │  │Image Storage │
+     │ Service      │  │              │  │              │
+     └──────────────┘  └──────────────┘  └──────────────┘
+             │
+             ▼
+     ┌──────────────────┐
+     │ Story / Character│
+     │ Scene / Dialogue │
+     │ Visual Prompts   │
+     └──────────────────┘
+________________________________________
+2. Architectural Design
+ComicCraft can follow a three-tier architecture.
+Presentation Layer
+Responsible for interaction with the user.
+Main components:
+•	Login/Register
+•	Dashboard
+•	New Comic page
+•	Story generator
+•	Character editor
+•	Panel editor
+•	Comic preview
+•	Export page
+Application Layer
+Responsible for business logic and communication with AI services.
+Main components:
+•	Authentication service
+•	Project service
+•	Gemini service
+•	Story service
+•	Character service
+•	Panel service
+•	Image service
+•	Export service
+Data Layer
+Responsible for persistent data.
+Includes:
+•	User database
+•	Comic projects
+•	Characters
+•	Stories
+•	Panels
+•	Dialogue
+•	Image metadata
+________________________________________
+3. High-Level System Architecture
+┌──────────────────────────────────────────────────────────┐
+│                    PRESENTATION LAYER                    │
+│                                                          │
+│  Login │ Dashboard │ Story Editor │ Panel Editor │       │
+│                                      Preview │ Export    │
+└───────────────────────────┬──────────────────────────────┘
+                            │
+                            ▼
+┌──────────────────────────────────────────────────────────┐
+│                     APPLICATION LAYER                    │
+│                                                          │
+│ Auth │ Project │ Story │ Character │ Panel │ Export      │
+│                     Gemini AI Service                    │
+└───────────────┬──────────────────────┬───────────────────┘
+                │                      │
+                ▼                      ▼
+       ┌────────────────┐     ┌──────────────────┐
+       │    Database    │     │ Gemini Models /  │
+       │                │     │ AI Services      │
+       └────────────────┘     └──────────────────┘
+                │
+                ▼
+       ┌────────────────┐
+       │ Image Storage  │
+       └────────────────┘
+________________________________________
+4. Module Design
+4.1 Authentication Module
+Handles user authentication and authorization.
+Functions
+•	Register
+•	Login
+•	Logout
+•	Password reset
+•	Session management
+•	User authorization
+User
+ │
+ ├── Register
+ ├── Login
+ └── Logout
+       │
+       ▼
+ Authentication Service
+       │
+       ▼
+ User Database
+________________________________________
+5. Dashboard Module
+The dashboard is the main screen after login.
+Features
+•	Create new comic
+•	View existing comics
+•	Search projects
+•	Edit project
+•	Delete project
+•	Duplicate project
+Example interface:
+┌──────────────────────────────────────────┐
+│ ComicCraft                 [+ New Comic] │
+├──────────────────────────────────────────┤
+│ My Comics                                │
+│                                          │
+│ ┌────────────┐ ┌────────────┐            │
+│ │ Comic 1    │ │ Comic 2    │            │
+│ │ Sci-Fi     │ │ Adventure  │            │
+│ │ [Edit]     │ │ [Edit]     │            │
+│ └────────────┘ └────────────┘            │
+└──────────────────────────────────────────┘
+________________________________________
+6. Comic Creation Module
+This module collects information from the user.
+Input fields
+•	Comic title
+•	Story idea
+•	Genre
+•	Number of pages
+•	Number of panels
+•	Target audience
+•	Language
+•	Art style
+•	Character information
+Example:
+Comic Title: The Lost Planet
+
+Genre: Science Fiction
+
+Story Idea:
+"A young astronaut discovers an abandoned
+civilization on a distant planet."
+
+Pages: 5
+
+Art Style: Cartoon
+________________________________________
+7. Gemini AI Module
+This is the core module of ComicCraft.
+The Gemini service receives structured information from the application and generates comic content.
+AI Generation Pipeline
+User Idea
+    │
+    ▼
+Prompt Builder
+    │
+    ▼
+Gemini Model
+    │
+    ▼
+Story Structure
+    │
+    ├── Characters
+    ├── Scenes
+    ├── Dialogue
+    ├── Narration
+    └── Visual Prompts
+Instead of asking Gemini for an unstructured block of text, the application should request structured output.
+Example:
+{
+  "title": "The Lost Planet",
+  "summary": "...",
+  "characters": [],
+  "scenes": [],
+  "panels": []
+}
+This makes the generated content easier for the backend and frontend to process.
+________________________________________
+8. Story Generation Design
+Input
+Story idea
+Genre
+Tone
+Target audience
+Number of pages
+Language
+Processing
+Input
+  ↓
+Prompt Template
+  ↓
+Gemini
+  ↓
+Structured Story
+  ↓
+Validation
+  ↓
+Database
+Output
+•	Title
+•	Summary
+•	Characters
+•	Plot
+•	Scenes
+•	Ending
+________________________________________
+9. Character Design Module
+The character module maintains consistent information about characters throughout the comic.
+Character Object
+Character
+ ├── ID
+ ├── Name
+ ├── Role
+ ├── Age
+ ├── Personality
+ ├── Appearance
+ ├── Clothing
+ ├── Abilities
+ └── Background
+Example:
+Name: Maya
+Role: Protagonist
+Personality: Brave and curious
+Appearance: Short black hair
+Clothing: Blue space suit
+This character information can be reused when generating scene and visual prompts.
+________________________________________
+10. Scene and Panel Design
+A story is divided into scenes, and scenes are divided into panels.
+Comic
+ │
+ ├── Page 1
+ │    ├── Panel 1
+ │    ├── Panel 2
+ │    └── Panel 3
+ │
+ ├── Page 2
+ │    ├── Panel 4
+ │    ├── Panel 5
+ │    └── Panel 6
+ │
+ └── Page 3
+      ├── Panel 7
+      └── Panel 8
+Each panel contains:
+Panel
+ ├── Panel ID
+ ├── Scene description
+ ├── Characters
+ ├── Action
+ ├── Background
+ ├── Narration
+ ├── Dialogue
+ └── Visual prompt
+________________________________________
+11. Dialogue Generation
+Gemini generates dialogue based on:
+•	Character personality
+•	Current scene
+•	Story context
+•	Relationship between characters
+•	Emotional situation
+Example:
+Panel 4
+
+Maya:
+"We have to leave before the storm arrives!"
+
+Alex:
+"But the signal is coming from inside the ruins."
+Users can edit the generated dialogue before finalizing the panel.
+________________________________________
+12. Visual Generation Design
+For each panel, ComicCraft creates a detailed visual prompt.
+Example:
+Scene:
+An abandoned futuristic city at sunset.
+
+Characters:
+Maya, wearing a blue space suit.
+
+Action:
+Maya walks toward a glowing doorway.
+
+Style:
+Colorful cinematic comic-book illustration.
+
+Camera:
+Wide shot.
+The visual prompt can then be passed to the selected image-generation component, or users can upload an image manually.
+________________________________________
+13. Comic Editor Design
+The comic editor is the main workspace.
+┌──────────────────────────────────────────────────┐
+│ ComicCraft Editor                                │
+├───────────────┬──────────────────────┬───────────┤
+│ Pages         │      Canvas          │ Properties│
+│               │                      │           │
+│ Page 1        │   ┌────────────┐     │ Scene     │
+│ Page 2        │   │   Panel 1  │     │ Dialogue  │
+│ Page 3        │   └────────────┘     │ Narration │
+│               │   ┌────────────┐     │ Image     │
+│ [+]           │   │   Panel 2  │     │           │
+│               │   └────────────┘     │ [Save]    │
+└───────────────┴──────────────────────┴───────────┘
+Editor operations
+•	Add panel
+•	Delete panel
+•	Move panel
+•	Resize panel
+•	Edit dialogue
+•	Edit narration
+•	Change image
+•	Regenerate AI content
+•	Save changes
+________________________________________
+14. Database Design
+A relational database can be designed as follows:
+USERS
+--------------------------------
+user_id PK
+name
+email
+password_hash
+created_at
+
+
+PROJECTS
+--------------------------------
+project_id PK
+user_id FK
+title
+genre
+description
+art_style
+language
+created_at
+updated_at
+
+
+CHARACTERS
+--------------------------------
+character_id PK
+project_id FK
+name
+role
+personality
+appearance
+background
+
+
+PAGES
+--------------------------------
+page_id PK
+project_id FK
+page_number
+
+
+PANELS
+--------------------------------
+panel_id PK
+page_id FK
+panel_number
+scene_description
+narration
+visual_prompt
+image_url
+
+
+DIALOGUES
+--------------------------------
+dialogue_id PK
+panel_id FK
+character_id FK
+dialogue_text
+Relationship
+USER
+ │
+ └──< PROJECT
+          │
+          ├──< CHARACTER
+          │
+          └──< PAGE
+                │
+                └──< PANEL
+                       │
+                       └──< DIALOGUE
+1 ──< N represents a one-to-many relationship.
+________________________________________
+15. API Design
+The frontend communicates with the backend through REST APIs.
+Authentication
+POST /api/auth/register
+POST /api/auth/login
+POST /api/auth/logout
+Projects
+GET    /api/projects
+POST   /api/projects
+GET    /api/projects/:id
+PUT    /api/projects/:id
+DELETE /api/projects/:id
+AI Generation
+POST /api/ai/story
+POST /api/ai/characters
+POST /api/ai/scenes
+POST /api/ai/dialogue
+POST /api/ai/visual-prompt
+Panels
+POST   /api/panels
+GET    /api/panels/:id
+PUT    /api/panels/:id
+DELETE /api/panels/:id
+Export
+POST /api/export/pdf
+POST /api/export/images
+________________________________________
+16. AI Prompt Architecture
+A reusable prompt template can be used instead of constructing prompts randomly.
+SYSTEM CONTEXT
+       ↓
+Comic generation rules
+       ↓
+PROJECT CONTEXT
+       ↓
+Genre + style + audience
+       ↓
+CHARACTER CONTEXT
+       ↓
+Existing character information
+       ↓
+USER REQUEST
+       ↓
+Gemini
+       ↓
+Structured Response
+This approach helps maintain consistency across multiple AI-generation steps.
+________________________________________
+17. Data Flow Design
+Story Creation
+User
+ ↓
+Enter Story Idea
+ ↓
+Frontend
+ ↓
+Backend API
+ ↓
+Prompt Builder
+ ↓
+Gemini
+ ↓
+JSON Response
+ ↓
+Validation
+ ↓
+Database
+ ↓
+Frontend
+ ↓
+Story Editor
+Panel Creation
+Story
+ ↓
+Character Context
+ ↓
+Scene Context
+ ↓
+Gemini
+ ↓
+Panel Data
+ ↓
+Database
+ ↓
+Comic Editor
+________________________________________
+18. Export Design
+The export module converts the edited comic into a final document.
+Comic Data
+    ↓
+Page Layout Engine
+    ↓
+Panel Rendering
+    ↓
+Text + Images
+    ↓
+PDF/Image Generator
+    ↓
+Download
+Example final structure:
+Comic
+ ├── Cover Page
+ ├── Page 1
+ │    ├── Panel 1
+ │    ├── Panel 2
+ │    └── Panel 3
+ ├── Page 2
+ │    ├── Panel 4
+ │    └── Panel 5
+ └── Final Page
+________________________________________
+19. Security Design
+Important security measures include:
+•	Store passwords using secure password hashing when authentication is managed by the application.
+•	Keep Gemini/API credentials on the server.
+•	Never expose secret API keys in frontend JavaScript.
+•	Validate all user input.
+•	Authenticate API requests.
+•	Authorize access to project IDs.
+•	Restrict users from accessing other users' projects.
+•	Validate uploaded images/files.
+•	Apply rate limits to expensive AI requests.
+________________________________________
+20. Error Handling Design
+The system should handle AI and application errors gracefully.
+AI Request
+    │
+    ▼
+Success? ─── Yes ──→ Process Result
+    │
+    No
+    │
+    ▼
+Retry / Error Handler
+    │
+    ▼
+User-friendly Message
+Examples:
+•	"Story generation failed. Please try again."
+•	"The AI response could not be processed."
+•	"Your session has expired. Please log in again."
+•	"Unable to generate the image. You can retry or upload an image."
+________________________________________
+21. UI Page Design
+The application can contain the following pages:
+ComicCraft
+│
+├── Landing Page
+├── Login
+├── Register
+├── Dashboard
+│
+├── Create Comic
+│
+├── Story Generator
+│
+├── Character Manager
+│
+├── Comic Editor
+│
+├── Preview
+│
+├── Export
+│
+└── Profile / Settings
+________________________________________
+22. Recommended Technology Architecture
+For a practical student project:
+Frontend
+   │
+   │ React / Next.js
+   ▼
+Backend
+   │
+   │ Node.js / Express
+   ▼
+Gemini API
+   │
+   ├── Story Generation
+   ├── Character Generation
+   ├── Scene Generation
+   └── Dialogue Generation
+
+Backend
+   │
+   ├── PostgreSQL / MongoDB
+   │
+   └── Cloud Image Storage
+A TypeScript-based frontend/backend stack can also be used if you want a single-language development environment.
+________________________________________
+23. Complete System Flow
+                  ┌──────────────┐
+                  │     User     │
+                  └──────┬───────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │ Create New Comic│
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │ Enter Story Idea│
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │   Gemini AI     │
+                │ Story Generator │
+                └────────┬────────┘
+                         │
+             ┌───────────┼───────────┐
+             ▼           ▼           ▼
+        Characters    Scenes      Story
+             │           │           │
+             └───────────┼───────────┘
+                         ▼
+                ┌─────────────────┐
+                │ Panel Generator │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │Dialogue/Narration│
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │  Comic Editor   │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │     Preview     │
+                └────────┬────────┘
+                         │
+                         ▼
+                ┌─────────────────┐
+                │ PDF/Image Export│
+                └─────────────────┘
+24. Design Summary
+The central design principle of ComicCraft is to separate AI generation from comic editing. Gemini generates structured creative content, while the application gives the user control to review, modify, arrange, and finalize that content.
+The core design can therefore be summarized as:
+User Idea → Gemini → Story → Characters → Scenes → Panels → Dialogue/Visuals → Comic Editor → Preview → Export
+This architecture also makes the project extensible: additional AI models, image-generation services, comic templates, languages, and export formats can be added without redesigning the entire application.
+
